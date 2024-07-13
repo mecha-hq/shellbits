@@ -1,0 +1,13 @@
+include asdf.mk
+include brew.mk
+include cosign.mk
+include docker.mk
+include file.mk
+include golang.mk
+include goreleaser.mk
+include json.mk
+include kubernetes.mk
+include markdown.mk
+include shell.mk
+include tilt.mk
+include yaml.mk
