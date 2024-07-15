@@ -4,7 +4,7 @@ set -e
 set -o errexit -o nounset
 
 if [ "$1" = "--help" ]; then
-  echo "Usage: $0 [--version]"
+  echo "Usage: $0 [--help]"
   exit 0
 fi
 
