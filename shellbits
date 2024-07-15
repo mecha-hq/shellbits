@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+set -o errexit -o nounset
+
+if [ "$1" = "--help" ]; then
+  echo "Usage: $0 [--version]"
+  exit 0
+fi
+
+echo "This is just a shellbits helper script, you can ignore it."
