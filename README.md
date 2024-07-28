@@ -18,6 +18,10 @@ This project goes hand in hand with makefiles, so you can use the scripts as mak
 
 It is possible to set values to the scripts via environment variables: they start with the name of the make target they are in and you can set them up in your project folder using a tool such as `direnv` or `mise`.
 
+You can pass in any of the variable described here when invoking the makefile targets, eg: `make tilt-up FORCE=1`.
+
+Keep in mind that more specific environment variables will win over less specific ones, eg: setting `TILT_DOWN_FORCE` will shadow `TILT_FORCE` and `FORCE`.
+
 ### asdf
 
 Environment variables:
@@ -130,12 +134,11 @@ Environment variables:
 ### tilt
 
 - `TILT_SHELLBITS_DIR`: the directory where shellbits is installed.
+- `TILT_PROJECT_NAME`: the name of the project used by all tilt targets and scripts.
+- `TILT_FORCE`: activate the force flag on any command that supports it.
+- `FORCE`: activate the force flag on any command that supports it.
 
 #### down
-
-Makefile parameters:
-
-- `FORCE=1`: force the destruction of the tilt's image registry.
 
 Environment variables:
 
@@ -156,10 +159,6 @@ Environment variables:
 
 #### up
 
-Makefile parameters:
-
-- `FORCE=1`: force the destruction of the tilt's image registry.
-
 Environment variables:
 
 - `TILT_UP_PROJECT_NAME`: the name of the project used by tilt. defaults to the name of the folder from where the script is called from.
@@ -167,6 +166,7 @@ Environment variables:
 - `TILT_UP_FORCE`: recreates the certificates and other transient resources.
 - `TILT_UP_SETUP_TLS_CERTS`: setup the self-signed tls certificates for the project.
 - `TILT_UP_WORKING_DIR`: the working directory for the tilt project. defaults to the folder where the script is called from.
+- `TILT_UP_CONFIGS_DIR`: the directory where the tilt configurations for the project are stored. defaults to `${WORKING_DIR}/hack/develop`.
 
 ### yaml
 
