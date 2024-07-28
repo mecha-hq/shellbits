@@ -3,10 +3,17 @@
 set -e
 set -o errexit -o nounset
 
-PROJECT_NAME="${1:-todo}"
+# Variables
 
-echo "Starting cluster and local registry..."
+SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+PROJECT_NAME="${TILT_START_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
 
-docker start "${PROJECT_NAME}-control-plane" "${PROJECT_NAME}-registry"
+# Load utils
+
+source "${SCRIPT_DIR}/utils.sh"
+
+# Exec
+
+start "${PROJECT_NAME}"
 
 echo "Done."

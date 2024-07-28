@@ -1,31 +1,41 @@
-.PHONY: check-deps-upgrades format install-tools lint show-coverage test test-e2e test-integration test-unit upgrade-deps
+GOLANG_SHELLBITS_DIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
+.PHONY: check-deps-upgrades
 check-deps-upgrades:
-	@golang/check-deps-upgrades.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/check-deps-upgrades.sh
 
+.PHONY: format
 format:
-	@golang/format.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/format.sh
 
+.PHONY: install-tools
 install-tools:
-	@golang/install-tools.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/install-tools.sh
 
+.PHONY: lint
 lint:
-	@golang/lint.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/lint.sh
 
-show-coverage:
-	@golang/show-coverage.sh
+.PHONY: show-coveflare
+show-coveflare:
+	@${GOLANG_SHELLBITS_DIR}/golang/show-coveflare.sh
 
+.PHONY: test
 test:
-	@golang/test.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/test.sh
 
+.PHONY: test-e2e
 test-e2e:
-	@golang/test-e2e.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/test-e2e.sh
 
+.PHONY: test-integration
 test-integration:
-	@golang/test-integration.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/test-integration.sh
 
+.PHONY: test-unit
 test-unit:
-	@golang/test-unit.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/test-unit.sh
 
+.PHONY: upgrade-deps
 upgrade-deps:
-	@golang/upgrade-deps.sh
+	@${GOLANG_SHELLBITS_DIR}/golang/upgrade-deps.sh

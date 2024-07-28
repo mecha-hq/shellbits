@@ -3,8 +3,28 @@
 set -e
 set -o errexit -o nounset
 
-PROJECT_NAME="${1:-todo}"
-FORCE="${FORCE:-0}"
+# Variables
+
+PROJECT_NAME="${TILT_DOWN_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
+FORCE="${TILT_DOWN_FORCE:-${TILT_FORCE:-0}}"
+
+while :; do
+    case ${1:-} in
+        --force)                  # Takes an option argument, ensuring it has been specified.
+            FORCE=1
+            ;;
+        --)                       # End of all options.
+            shift
+            break
+            ;;
+        *)                        # Default case: If no more options then break out of the loop.
+            break
+    esac
+
+    shift
+done
+
+# Exec
 
 echo "Deleting cluster..."
 docker rm -f "${PROJECT_NAME}-control-plane"

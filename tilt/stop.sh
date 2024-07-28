@@ -3,7 +3,11 @@
 set -e
 set -o errexit -o nounset
 
-PROJECT_NAME="${1:-todo}"
+# Variables
+
+PROJECT_NAME="${TILT_STOP_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
+
+# Exec
 
 echo "Stopping cluster and local registry..."
 

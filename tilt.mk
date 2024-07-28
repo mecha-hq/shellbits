@@ -1,13 +1,19 @@
-.PHONY: tilt-down tilt-start tilt-stop tilt-up
+TILT_SHELLBITS_DIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
+.PHONY: tilt-down
 tilt-down:
-	@tilt/down.sh
+	@${TILT_SHELLBITS_DIR}/tilt/down.sh \
+	   $$([[ "${TILT_DOWN_FORCE:-${TILT_FORCE:-0}}" -eq 1 ]] && echo --force)
 
+.PHONY: tilt-start
 tilt-start:
-	@tilt/start.sh
+	@${TILT_SHELLBITS_DIR}/tilt/start.sh
 
+.PHONY: tilt-stop
 tilt-stop:
-	@tilt/stop.sh
+	@${TILT_SHELLBITS_DIR}/tilt/stop.sh
 
+.PHONY: tilt-up
 tilt-up:
-	@tilt/up.sh
+	@${TILT_SHELLBITS_DIR}/tilt/up.sh \
+	   $$([[ "${TILT_UP_FORCE:-${TILT_FORCE:-0}}" -eq 1 ]] && echo --force)
