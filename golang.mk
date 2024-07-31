@@ -16,9 +16,9 @@ install-tools:
 lint:
 	@${GOLANG_SHELLBITS_DIR}/golang/lint.sh
 
-.PHONY: show-coveflare
-show-coveflare:
-	@${GOLANG_SHELLBITS_DIR}/golang/show-coveflare.sh
+.PHONY: show-coverage
+show-coverage:
+	@${GOLANG_SHELLBITS_DIR}/golang/show-coverage.sh
 
 .PHONY: test
 test:
