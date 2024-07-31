@@ -1,8 +1,8 @@
 # Mecha Shellbits
 
-Atomic, self-contained, composable shell scripts and Makefiles to use for development and CI pipeline.
+Atomic, self-contained, composable shell scripts and Makefiles to use for development and CI pipelines.
 
-They are a library that can be used as is or as a reference for your own scripts.
+Shellbits is a library that can be used as is or as a reference for your own scripts.
 
 Ideally it will grow in a framework with its own rules and conventions.
 
