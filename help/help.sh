@@ -11,5 +11,5 @@ for MAKEFILE in "${@}"; do
     TARGETS+="\n"
 done
 
-printf "${TARGETS}" | sort | uniq
+echo "${TARGETS}" | sort | uniq
 echo
