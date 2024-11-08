@@ -3,7 +3,7 @@
 set -e
 set -o errexit -o nounset
 
-PREFIX=github.com/mecha-ci
+PREFIX=github.com/mecha-hq
 
 GOFILES=$(find . -name "*.go" -type f -not -path '*/vendor/*' | sed 's/^\.\///g')
 
