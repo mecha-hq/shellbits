@@ -8,7 +8,33 @@ Ideally it will grow in a framework with its own rules and conventions.
 
 ## Installation
 
-Clone this repository and reference the scripts from there, or copy them to your own project within the scripts folder.
+### Method 1: Mise (preferred)
+
+Ensure you have [mise](https://mise.jdx.dev) installed and properly configured, then add the following lines to your `mise.toml` file:
+
+```toml
+[tools]
+shellbits = "0.2.0"
+
+[alias]
+shellbits = "asdf:https://github.com/mecha-hq/asdf-shellbits"
+```
+
+Last but not least, run `mise install`.
+
+### Method 2: Asdf
+
+Ensure you have [asdf](https://asdf-vm.com) installed and properly configured, then add the following line to your `.tool-versions` file:
+
+```shell
+shellbits 0.2.0
+```
+
+Once all the above is done, run `asdf plugin add shellbits https://github.com/mecha-hq/asdf-shellbits` and `asdf install`.
+
+### Method 3: Git clone
+
+Run `git clone git@github.com:mecha-hq/shellbits.git`in a folder of your choice.
 
 ## Usage
 
