@@ -14,7 +14,7 @@ Ensure you have [mise](https://mise.jdx.dev) installed and properly configured, 
 
 ```toml
 [tools]
-shellbits = "0.2.0"
+shellbits = "0.3.0"
 
 [alias]
 shellbits = "asdf:https://github.com/mecha-hq/asdf-shellbits"
@@ -27,7 +27,7 @@ Last but not least, run `mise install`.
 Ensure you have [asdf](https://asdf-vm.com) installed and properly configured, then add the following line to your `.tool-versions` file:
 
 ```shell
-shellbits 0.2.0
+shellbits 0.3.0
 ```
 
 Once all the above is done, run `asdf plugin add shellbits https://github.com/mecha-hq/asdf-shellbits` and `asdf install`.
