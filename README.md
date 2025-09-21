@@ -192,7 +192,7 @@ Environment variables:
 - `TILT_UP_FORCE`: recreates the certificates and other transient resources.
 - `TILT_UP_SETUP_TLS_CERTS`: setup the self-signed tls certificates for the project.
 - `TILT_UP_WORKING_DIR`: the working directory for the tilt project. defaults to the folder where the script is called from.
-- `TILT_UP_CONFIGS_DIR`: the directory where the tilt configurations for the project are stored. defaults to `${WORKING_DIR}/hack/develop`.
+- `TILT_UP_CONFIGS_DIR`: the directory where the tilt configurations for the project are stored. defaults to `${WORKING_DIR}/configs`.
 
 ### yaml
 
