@@ -61,6 +61,6 @@ setup_tiltfiles "${CONFIGS_DIR}/tiltfiles"
 
 echo "Starting Tilt's dev environment..."
 
-tilt up -f "${TILTFILE_PATH}"
+tilt up -d -v -f "${TILTFILE_PATH}"
 
 echo "Done."
