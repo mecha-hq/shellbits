@@ -23,11 +23,11 @@ while :; do
         -f|--force)
             FORCE=1
             ;;
-        --)                       # End of all options.
+        --) # End of all options.
             shift
             break
             ;;
-        *)                        # Default case: If no more options then break out of the loop.
+        *)  # Default case: If no more options then break out of the loop.
             break
     esac
 
@@ -36,11 +36,11 @@ done
 
 # Load utils
 
-source "${SCRIPT_DIR}/utils.sh"
+. "${SCRIPT_DIR}/utils.sh"
 
 # Setup
 
-if [[ ${SETUP_TLS_CERTS} -eq 1 ]]; then
+if [ "${SETUP_TLS_CERTS:-0}" -eq 1 ]; then
     # Setup self-signed TLS certificates for the ingress to work.
     # It installs the CA certificate to your browser's trusted certificates.
     # Remember to add 0.0.0.0 ${PROJECT_DOMAIN} line to your /etc/hosts file.
@@ -49,8 +49,8 @@ fi
 
 # Exec
 
-if [[ -n $(docker ps -q -a -f name="${PROJECT_NAME}-registry" || true) ]] &&
-    [[ -n $(docker ps -q -a -f name="${PROJECT_NAME}-control-plane" || true) ]]; then
+if docker inspect "${PROJECT_NAME}-registry" >/dev/null 2>&1 &&
+   docker inspect "${PROJECT_NAME}-control-plane" >/dev/null 2>&1; then
     start "${PROJECT_NAME}"
 else
     create "${KUBERNETES_MANIFESTS_DIR}"
