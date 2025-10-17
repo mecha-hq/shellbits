@@ -35,12 +35,12 @@ while :; do
     shift
 done
 
-if [[ ${_HAS_NO_COLOR} == true && ${_HAS_COLOR} == true ]]; then
+if [ ${_HAS_NO_COLOR} = true && ${_HAS_COLOR} = true ]; then
     echo "Error: You can't use --no-color and --color flags at the same time."
     exit 1
 fi
 
 helm template "${CHART_NAME}" "${CHART_PATH}" --atomic --create-namespace --dry-run --debug | \
     yq \
-        $( [[ "$(CHART_COLOR)" == false ]] && echo --no-colors ) \
-        $( [[ "$(CHART_COLOR)" == true ]] && echo --colors )
+        $( [ "$(CHART_COLOR)" = false ] && echo --no-colors ) \
+        $( [ "$(CHART_COLOR)" = true ] && echo --colors )
