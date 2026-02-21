@@ -10,8 +10,8 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 # Parse arguments
 _image_name="${1:?Error: IMAGE_NAME argument is required}"
-_image_tag="${2:-${COSIGN_TEST_SIGN_IMAGE_TAG:-latest}}"
-_cosign_env_var="${3:-${COSIGN_TEST_SIGN_COSIGN_ENV_VAR:-COSIGN_KEY}}"
+_image_tag="${2:-${COSIGN_TEST_SIGN_IMAGE_TAG}}"
+_cosign_env_var="${3:-${COSIGN_TEST_SIGN_COSIGN_ENV_VAR}}"
 
 # Sign the image
 echo "Signing image ${_image_name}:${_image_tag}"
