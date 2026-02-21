@@ -5,16 +5,16 @@ include ${YAML_SHELLBITS_DIR}/utils.mk
 
 .PHONY: yaml-lint
 yaml-lint:
-	@${DIR}/yaml/lint.sh
+	@${YAML_SHELLBITS_DIR}/yaml/lint/main.sh
 
 .PHONY: yaml-lint-docker
 yaml-lint-docker:
-	$(call docker-run,"${YAML_SHELLBITS_DIR}/yaml/lint.sh","${YAML_YAMLLINT_IMAGE}")
+	$(call docker-run,"${YAML_SHELLBITS_DIR}/yaml/lint/main.sh","${YAML_YAMLLINT_IMAGE}")
 
 .PHONY: yaml-format
 yaml-format:
-	@${DIR}/yaml/format.sh
+	@${YAML_SHELLBITS_DIR}/yaml/format/main.sh
 
 .PHONY: yaml-format-docker
 yaml-format-docker:
-	$(call docker-run,"${YAML_SHELLBITS_DIR}/yaml/format.sh","${YAML_YAMLLINT_IMAGE}")
+	$(call docker-run,"${YAML_SHELLBITS_DIR}/yaml/format/main.sh","${YAML_YAMLLINT_IMAGE}")

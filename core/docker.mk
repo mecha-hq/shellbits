@@ -5,8 +5,8 @@ include ${DOCKER_SHELLBITS_DIR}/utils.mk
 
 .PHONY: dockerfile-lint
 dockerfile-lint:
-	@${SHELLBITS_DIR}/docker/lint-dockerfile.sh
+	@${DOCKER_SHELLBITS_DIR}/docker/lint-dockerfile/main.sh
 
 .PHONY: dockerfile-lint-docker
 dockerfile-lint-docker:
-	$(call docker-run,"${SHELLBITS_DIR}/file/lint-dockerfile.sh","${DOCKER_HADOLINT_IMAGE}")
+	$(call docker-run,"${DOCKER_SHELLBITS_DIR}/docker/lint-dockerfile/main.sh","${DOCKER_HADOLINT_IMAGE}")

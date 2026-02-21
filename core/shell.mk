@@ -6,16 +6,16 @@ include ${SHELL_SHELLBITS_DIR}/utils.mk
 
 .PHONY: shell-lint
 shell-lint:
-	@${SHELL_SHELLBITS_DIR}/shell/lint.sh
+	@${SHELL_SHELLBITS_DIR}/shell/lint/main.sh
 
 .PHONY: shell-lint-docker
 shell-lint-docker:
-	$(call docker-run,"${SHELL_SHELLBITS_DIR}/shell/lint.sh","${SHELL_SHELLCHECK_IMAGE}")
+	$(call docker-run,"${SHELL_SHELLBITS_DIR}/shell/lint/main.sh","${SHELL_SHELLCHECK_IMAGE}")
 
 .PHONY: shell-format
 shell-format:
-	@${SHELL_SHELLBITS_DIR}/shell/format.sh
+	@${SHELL_SHELLBITS_DIR}/shell/format/main.sh
 
 .PHONY: shell-format-docker
 shell-format-docker:
-	$(call docker-run,"${SHELL_SHELLBITS_DIR}/shell/format.sh","${SHELL_SHFMT_IMAGE}")
+	$(call docker-run,"${SHELL_SHELLBITS_DIR}/shell/format/main.sh","${SHELL_SHFMT_IMAGE}")

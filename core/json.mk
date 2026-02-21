@@ -5,16 +5,16 @@ include ${JSON_SHELLBITS_DIR}/utils.mk
 
 .PHONY: json-lint
 json-lint:
-	@${DIR}/json/lint.sh
+	@${JSON_SHELLBITS_DIR}/json/lint/main.sh
 
 .PHONY: json-lint-docker
 json-lint-docker:
-	$(call docker-run,"${JSON_SHELLBITS_DIR}/json/lint.sh","${JSON_JSONLINT_IMAGE}")
+	$(call docker-run,"${JSON_SHELLBITS_DIR}/json/lint/main.sh","${JSON_JSONLINT_IMAGE}")
 
 .PHONY: json-format
 json-format:
-	@${DIR}/json/format.sh
+	@${JSON_SHELLBITS_DIR}/json/format/main.sh
 
 .PHONY: json-format-docker
 json-format-docker:
-	$(call docker-run,"${JSON_SHELLBITS_DIR}/json/format.sh","${JSON_JSONLINT_IMAGE}")
+	$(call docker-run,"${JSON_SHELLBITS_DIR}/json/format/main.sh","${JSON_JSONLINT_IMAGE}")

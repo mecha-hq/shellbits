@@ -1,5 +1,5 @@
 COSIGN_SHELLBITS_DIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-.PHONY: cosign-install-latest
-cosign-install-latest:
-	@${COSIGN_SHELLBITS_DIR}/cosign/install-latest.sh
+.PHONY: cosign-test-sign
+cosign-test-sign:
+	@${COSIGN_SHELLBITS_DIR}/cosign/test-sign/main.sh $1
