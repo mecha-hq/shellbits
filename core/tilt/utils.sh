@@ -86,7 +86,7 @@ setup_tiltfiles() {
 
   mkdir -p "${_tiltfiles_dir}"
 
-  envsubst < "${_script_dir}/files/setup.tiltfile.tpl" > "${_tiltfiles_dir}/setup.tiltfile"
+  envsubst < "${_script_dir}/setup.tiltfile.tpl" > "${_tiltfiles_dir}/setup.tiltfile"
 
 }
 
