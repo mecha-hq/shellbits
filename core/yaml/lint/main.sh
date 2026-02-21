@@ -10,4 +10,4 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/env.sh"
 
 # Exec
-yamllint ${YAML_LINT_ARGS:- -c .rules/yamllint.yaml} .
+yamllint "${YAML_LINT_ARGS:- -c .rules/yamllint.yaml}" .

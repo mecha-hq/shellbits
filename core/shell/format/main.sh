@@ -10,4 +10,4 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/env.sh"
 
 # Exec
-shfmt ${SHELL_FORMAT_ARGS:--i 2 -ci -sr -w} .
+shfmt "${SHELL_FORMAT_ARGS:--i 2 -ci -sr -w}" .
