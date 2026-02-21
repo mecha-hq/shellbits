@@ -11,4 +11,4 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/../env.sh"
 
 # Export environment variables
-export DOCKER_LINT_DOCKERFILE_FIND_ARGS="${DOCKER_LINT_DOCKERFILE_FIND_ARGS:-}"
+export DOCKER_LINT_DOCKERFILE_FIND_FLAGS="${DOCKER_LINT_DOCKERFILE_FIND_FLAGS:-}"

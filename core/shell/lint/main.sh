@@ -9,4 +9,4 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/env.sh"
 
 # Exec
-shellcheck ${SHELL_LINT_ARGS} -- **/*.sh
+shellcheck ${SHELL_LINT_FLAGS} -- **/*.sh

@@ -19,5 +19,5 @@ find . \
   -not -name '._*' \
   -not -name '.DS_Store' \
   -not -name '.gitkeep' \
-  "${DOCKER_LINT_DOCKERFILE_FIND_ARGS:-}" \
+  "${DOCKER_LINT_DOCKERFILE_FIND_FLAGS:-}" \
   -exec hadolint {} \;
