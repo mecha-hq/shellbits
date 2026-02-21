@@ -1,0 +1,22 @@
+# Checkmake configuration for tilt Makefiles
+# https://github.com/mrtazz/checkmake
+
+# Enable strict checks
+strict: true
+
+# Custom rules for our codebase
+rules:
+  - id: no-phony-duplicates
+    pattern: "^\.PHONY:.*\b(\w+)\b.*\b\1\b"
+    message: "Duplicate target in .PHONY"
+    severity: error
+  
+  - id: consistent-indentation
+    pattern: "^\t[^\t]"
+    message: "Inconsistent indentation (should use tabs)"
+    severity: warning
+
+# Ignore patterns
+exclude:
+  - ".git/*"
+  - "node_modules/*"

@@ -1,0 +1,22 @@
+# ShellCheck configuration for tilt scripts
+# https://www.shellcheck.net/wiki/Directive
+
+# Allow certain patterns that we consider safe
+disable:
+  - SC2034
+  - SC2155
+  - SC2086
+
+# Enable strict checks
+severity: error
+
+# Custom checks for our codebase
+exclude:
+  - ".git/*"
+  - "node_modules/*"
+
+# Allow shebang variations
+check-sourced: true
+
+# Minimum POSIX compliance level
+posix-compliance: true
