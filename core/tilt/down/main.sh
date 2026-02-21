@@ -6,9 +6,10 @@ set -u
 # Variables
 
 _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-_project_name="${TILT_DOWN_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
-# Source environment variables
+# Source environment variables FIRST
 . "${_script_dir}/env.sh"
+# THEN set private variables using the now-loaded env vars
+_project_name="${TILT_DOWN_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
 _force="${TILT_DOWN_FORCE:-${TILT_FORCE:-0}}"
 
 while :; do

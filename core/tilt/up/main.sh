@@ -6,6 +6,9 @@ set -u
 # Variables
 
 _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+# Source environment variables FIRST
+. "${_script_dir}/env.sh"
+# THEN set private variables using the now-loaded env vars
 _project_name="${TILT_UP_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
 _project_domain="${TILT_UP_PROJECT_DOMAIN:-${_project_name}.dev}"
 _force="${TILT_UP_FORCE:-${TILT_FORCE:-0}}"
@@ -15,9 +18,6 @@ _configs_dir=${TILT_UP_CONFIGS_DIR:-"${_working_dir}/configs"}
 _kubernetes_manifests_dir=${TILT_UP_KUBERNETES_MANIFESTS_DIR:-"${_configs_dir}/kubernetes-manifests"}
 _tiltfile_path=${TILT_UP_TILTFILE_PATH:-"${_working_dir}/Tiltfile"}
 _tls_manifest_path=${TILT_UP_TLS_MANIFEST_PATH:-"${_kubernetes_manifests_dir}/titan.dev-tls.yaml"}
-
-# Source environment variables
-. "${_script_dir}/env.sh"
 
 # Parse flags
 
