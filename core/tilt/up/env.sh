@@ -1,5 +1,8 @@
 #!/bin/sh
 
+set -e
+set -u
+
 # Public environment variables for tilt up command
 
 # Variables

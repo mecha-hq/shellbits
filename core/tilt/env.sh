@@ -1,5 +1,8 @@
 #!/bin/sh
 
+set -e
+set -u
+
 # Common public environment variables for tilt scripts
 
 # Export environment variables
