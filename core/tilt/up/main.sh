@@ -36,7 +36,7 @@ done
 
 # Load utils
 
-. "${_script_dir}/utils.sh"
+. "${_script_dir}/../utils.sh"
 
 # Setup
 

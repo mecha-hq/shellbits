@@ -10,7 +10,7 @@ _project_name="${TILT_START_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd)
 
 # Load utils
 
-. "${_script_dir}/utils.sh"
+. "${_script_dir}/../utils.sh"
 
 # Exec
 
