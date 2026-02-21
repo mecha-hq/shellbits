@@ -2,18 +2,18 @@
 
 # Create the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
 function create {
-  KUBERNETES_MANIFESTS_DIR=${1:?Error: argument 1 must not be empty}
+  _kubernetes_manifests_dir=${1:?Error: argument 1 must not be empty}
 
   echo "Creating cluster and local registry..."
 
-  ctlptl apply -f "${KUBERNETES_MANIFESTS_DIR}/ctlptl-registry.yml"
-  ctlptl apply -f "${KUBERNETES_MANIFESTS_DIR}/kind-config.yml"
+  ctlptl apply -f "${_kubernetes_manifests_dir}/ctlptl-registry.yml"
+  ctlptl apply -f "${_kubernetes_manifests_dir}/kind-config.yml"
 
   wait_for_container_ready "${_project_name}-registry" 60 || return 1
   wait_for_container_ready "${_project_name}-control-plane" 180 || return 1
   wait_for_kube_api "${_project_name}" 60 || return 1
 
-  disable_containers_restart
+  disable_containers_restart "${_project_name}"
 }
 
 # Start the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
@@ -28,7 +28,7 @@ function start {
   wait_for_container_ready "${_project_name}-control-plane" 180 || return 1
   wait_for_kube_api "${_project_name}" 60 || return 1
 
-  disable_containers_restart
+  disable_containers_restart "${_project_name}"
 }
 
 
@@ -36,85 +36,85 @@ function start {
 # This is necessary for the ingress to work.
 # Remember to add "0.0.0.0 ${_project_domain}" line to your /etc/hosts file
 function setup_certs {
-  MANIFESTS_DIR=${1:?Error: argument 1 must not be empty}
-  CERTS_DIR=${2:?Error: argument 2 must not be empty}
-  FORCE=${3:?Error: argument 3 must not be empty}
+  _manifests_dir=${1:?Error: argument 1 must not be empty}
+  _certs_dir=${2:?Error: argument 2 must not be empty}
+  _force=${3:?Error: argument 3 must not be empty}
 
-  mkdir -p "${CERTS_DIR}" "${MANIFESTS_DIR}"
+  mkdir -p "${_certs_dir}" "${_manifests_dir}"
 
-  if [ "${FORCE}" -eq 1 ]; then
-    if [ -f "${MANIFESTS_DIR}/${_project_domain}-tls.yaml" ]; then
-      rm -f "${MANIFESTS_DIR}/${_project_domain}-tls.yaml"
+  if [ "${_force}" -eq 1 ]; then
+    if [ -f "${_manifests_dir}/${_project_domain}-tls.yaml" ]; then
+      rm -f "${_manifests_dir}/${_project_domain}-tls.yaml"
     fi
   fi
 
   # setup self-signed tls certificates
-  if [ ! -f "${MANIFESTS_DIR}/${_project_domain}-tls.yaml" ]; then
+  if [ ! -f "${_manifests_dir}/${_project_domain}-tls.yaml" ]; then
     echo "Creating TLS certificate..."
 
-    (cd "${CERTS_DIR}" && mkcert "*.${_project_domain}" "${_project_domain}" && mkcert -install) &&
+    (cd "${_certs_dir}" && mkcert "*.${_project_domain}" "${_project_domain}" && mkcert -install) &&
       echo "Creating Kubernetes secret..."
 
       kubectl create secret tls "${_project_domain}-tls" \
-        --cert="${CERTS_DIR}/_wildcard.${_project_domain}+1.pem" \
-        --key="${CERTS_DIR}/_wildcard.${_project_domain}+1-key.pem" \
-        -o yaml --dry-run=client > "${MANIFESTS_DIR}/${_project_domain}-tls.yaml"
+        --cert="${_certs_dir}/_wildcard.${_project_domain}+1.pem" \
+        --key="${_certs_dir}/_wildcard.${_project_domain}+1-key.pem" \
+        -o yaml --dry-run=client > "${_manifests_dir}/${_project_domain}-tls.yaml"
   fi
 }
 
 function setup_kubeconfig {
   _project_name=${1:?Error: argument 1 must not be empty}
-  CONFIGS_DIR=${2:?Error: argument 2 must not be empty}
+  _configs_dir=${2:?Error: argument 2 must not be empty}
 
   echo "Setting up kubeconfig..."
 
-  kind get kubeconfig --name "${_project_name}" > "${CONFIGS_DIR}/kubeconfig"
-  kubectl --kubeconfig "${CONFIGS_DIR}/kubeconfig" config set-context "${_project_name}"
+  kind get kubeconfig --name "${_project_name}" > "${_configs_dir}/kubeconfig"
+  kubectl --kubeconfig "${_configs_dir}/kubeconfig" config set-context "${_project_name}"
 
-  export KUBECONFIG="${CONFIGS_DIR}/kubeconfig"
+  export KUBECONFIG="${_configs_dir}/kubeconfig"
 }
 
 function setup_tiltfiles {
-  TILTFILES_DIR=${1:?Error: argument 1 must not be empty}
+  _tiltfiles_dir=${1:?Error: argument 1 must not be empty}
 
   echo "Setting up tiltfiles..."
 
-  mkdir -p "${TILTFILES_DIR}"
+  mkdir -p "${_tiltfiles_dir}"
 
-  cat "${_script_dir}/files/setup.tiltfile.tpl" | envsubst > "${TILTFILES_DIR}/setup.tiltfile"
+  cat "${_script_dir}/files/setup.tiltfile.tpl" | envsubst > "${_tiltfiles_dir}/setup.tiltfile"
 }
 
 # Wait until the container is running and, if a Docker healthcheck exists, reports healthy.
 function wait_for_container_ready {
-  CONTAINER_NAME=${1:?Error: argument 1 must not be empty}
-  TIMEOUT=${2:-60}
-  INTERVAL=1
-  ELAPSED=0
+  _container_name=${1:?Error: argument 1 must not be empty}
+  _timeout=${2:-60}
+  _interval=1
+  _elapsed=0
 
-  printf 'Waiting for %s to be ready... ' "${CONTAINER_NAME}"
+  printf 'Waiting for %s to be ready... ' "${_container_name}"
 
-  while [ "${ELAPSED}" -lt "${TIMEOUT}" ]; do
-    INSPECT_OUTPUT=$(docker inspect --format '{{.State.Status}}:{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "${CONTAINER_NAME}" 2>/dev/null)
-    INSPECT_EXIT=$?
+  while [ "${_elapsed}" -lt "${_timeout}" ]; do
+    _inspect_output=$(docker inspect --format '{{.State.Status}}:{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "${_container_name}" 2>/dev/null)
+    _inspect_exit=$?
 
-    if [ "${INSPECT_EXIT}" -eq 0 ] && [ -n "${INSPECT_OUTPUT}" ]; then
-      STATUS=${INSPECT_OUTPUT%%:*}
-      HEALTH=${INSPECT_OUTPUT#*:}
+    if [ "${_inspect_exit}" -eq 0 ] && [ -n "${_inspect_output}" ]; then
+      _status=${_inspect_output%%:*}
+      _health=${_inspect_output#*:}
 
-      if [ "${STATUS}" = "${INSPECT_OUTPUT}" ]; then
-        HEALTH=none
+      if [ "${_status}" = "${_inspect_output}" ]; then
+        _health=none
       fi
 
-      if [ "${STATUS}" = "running" ]; then
-        if [ "${HEALTH}" = "healthy" ] || [ "${HEALTH}" = "none" ]; then
-          printf 'READY\n' "${CONTAINER_NAME}"
+      if [ "${_status}" = "running" ]; then
+        if [ "${_health}" = "healthy" ] || [ "${_health}" = "none" ]; then
+          printf 'READY\n' "${_container_name}"
           return 0
         fi
       fi
     fi
 
-    sleep "${INTERVAL}"
-    ELAPSED=$(expr $ELAPSED + $INTERVAL)
+    sleep "${_interval}"
+    _elapsed=$(expr $_elapsed + $_interval)
   done
 
   printf 'FAIL\n' >&2
@@ -123,23 +123,23 @@ function wait_for_container_ready {
 
 # Wait until the kubernetes api is responding with a success message.
 function wait_for_kube_api {
-  CLUSTER_NAME=${1:?Error: argument 1 must not be empty}
-  TIMEOUT=${2:-60}
-  INTERVAL=1
-  ELAPSED=0
-  PORT="$(kind get kubeconfig --name ${CLUSTER_NAME} | yq '.clusters[0].cluster.server' | cut -d ':' -f 3)"
+  _cluster_name=${1:?Error: argument 1 must not be empty}
+  _timeout=${2:-60}
+  _interval=1
+  _elapsed=0
+  _port="$(kind get kubeconfig --name ${_cluster_name} | yq '.clusters[0].cluster.server' | cut -d ':' -f 3)"
 
   printf 'Waiting for Kubernetes API to return 200... '
 
-  while [ "${ELAPSED}" -lt "${TIMEOUT}" ]; do
-    HTTP_CODE=$(curl -ks -o /dev/null -w "%{http_code}" "https://127.0.0.1:${PORT}/version?timeout=32s" || true)
-    if [ "${HTTP_CODE}" = "200" ]; then
+  while [ "${_elapsed}" -lt "${_timeout}" ]; do
+    _http_code=$(curl -ks -o /dev/null -w "%{http_code}" "https://127.0.0.1:${_port}/version?timeout=32s" || true)
+    if [ "${_http_code}" = "200" ]; then
       printf 'READY\n'
       return 0
     fi
 
-    sleep "${INTERVAL}"
-    ELAPSED=$(expr $ELAPSED + $INTERVAL)
+    sleep "${_interval}"
+    _elapsed=$(expr $_elapsed + $_interval)
   done
 
   printf 'FAIL\n' >&2
@@ -148,5 +148,7 @@ function wait_for_kube_api {
 
 # Disable automatic restart of the cluster and the registry
 function disable_containers_restart {
+  _project_name=${1:?Error: argument 1 must not be empty}
+
   docker update --restart=no "${_project_name}-registry" "${_project_name}-control-plane"
 }
