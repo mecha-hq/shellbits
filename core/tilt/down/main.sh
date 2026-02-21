@@ -7,10 +7,6 @@ set -u
 
 _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
-# Source environment variables
-
-. "${_script_dir}/env.sh"
-
 # Parse flags
 
 while :; do
@@ -28,6 +24,10 @@ while :; do
 
     shift
 done
+
+# Source environment variables
+
+. "${_script_dir}/env.sh"
 
 # Exec
 
