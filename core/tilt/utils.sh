@@ -1,7 +1,7 @@
 # Utilities
 
 # Create the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
-function create {
+create() {
   _kubernetes_manifests_dir=${1:?Error: argument 1 must not be empty}
 
   echo "Creating cluster and local registry..."
@@ -17,7 +17,7 @@ function create {
 }
 
 # Start the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
-function start {
+start() {
   _project_name=${1:?Error: argument 1 must not be empty}
 
   echo "Starting cluster and local registry..."
@@ -35,7 +35,7 @@ function start {
 # Create and inject self-signed TLS certificates into the cluster using mkcert.
 # This is necessary for the ingress to work.
 # Remember to add "0.0.0.0 ${_project_domain}" line to your /etc/hosts file
-function setup_certs {
+setup_certs() {
   _project_domain=${1:?Error: argument 1 must not be empty}
   _manifests_dir=${2:?Error: argument 2 must not be empty}
   _certs_dir=${3:?Error: argument 3 must not be empty}
@@ -63,7 +63,7 @@ function setup_certs {
   fi
 }
 
-function setup_kubeconfig {
+setup_kubeconfig() {
   _project_name=${1:?Error: argument 1 must not be empty}
   _configs_dir=${2:?Error: argument 2 must not be empty}
 
@@ -75,18 +75,20 @@ function setup_kubeconfig {
   export KUBECONFIG="${_configs_dir}/kubeconfig"
 }
 
-function setup_tiltfiles {
+setup_tiltfiles() {
   _tiltfiles_dir=${1:?Error: argument 1 must not be empty}
+  _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
   echo "Setting up tiltfiles..."
 
   mkdir -p "${_tiltfiles_dir}"
 
-  cat "${_script_dir}/files/setup.tiltfile.tpl" | envsubst > "${_tiltfiles_dir}/setup.tiltfile"
+  envsubst < "${_script_dir}/files/setup.tiltfile.tpl" > "${_tiltfiles_dir}/setup.tiltfile"
+
 }
 
 # Wait until the container is running and, if a Docker healthcheck exists, reports healthy.
-function wait_for_container_ready {
+wait_for_container_ready() {
   _container_name=${1:?Error: argument 1 must not be empty}
   _timeout=${2:-60}
   _interval=1
@@ -108,14 +110,15 @@ function wait_for_container_ready {
 
       if [ "${_status}" = "running" ]; then
         if [ "${_health}" = "healthy" ] || [ "${_health}" = "none" ]; then
-          printf 'READY\n' "${_container_name}"
+          printf 'READY\n'
           return 0
         fi
       fi
     fi
 
     sleep "${_interval}"
-    _elapsed=$(expr $_elapsed + $_interval)
+
+    _elapsed=$((_elapsed + _interval))
   done
 
   printf 'FAIL\n' >&2
@@ -123,12 +126,12 @@ function wait_for_container_ready {
 }
 
 # Wait until the kubernetes api is responding with a success message.
-function wait_for_kube_api {
+wait_for_kube_api() {
   _cluster_name=${1:?Error: argument 1 must not be empty}
   _timeout=${2:-60}
   _interval=1
   _elapsed=0
-  _port="$(kind get kubeconfig --name ${_cluster_name} | yq '.clusters[0].cluster.server' | cut -d ':' -f 3)"
+  _port="$(kind get kubeconfig --name "${_cluster_name}" | yq '.clusters[0].cluster.server' | cut -d ':' -f 3)"
 
   printf 'Waiting for Kubernetes API to return 200... '
 
@@ -140,7 +143,8 @@ function wait_for_kube_api {
     fi
 
     sleep "${_interval}"
-    _elapsed=$(expr $_elapsed + $_interval)
+
+    _elapsed=$((_elapsed + _interval))
   done
 
   printf 'FAIL\n' >&2
@@ -148,7 +152,7 @@ function wait_for_kube_api {
 }
 
 # Disable automatic restart of the cluster and the registry
-function disable_containers_restart {
+disable_containers_restart() {
   _project_name=${1:?Error: argument 1 must not be empty}
 
   docker update --restart=no "${_project_name}-registry" "${_project_name}-control-plane"
