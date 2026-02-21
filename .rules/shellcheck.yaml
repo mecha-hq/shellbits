@@ -2,10 +2,7 @@
 # https://www.shellcheck.net/wiki/Directive
 
 # Allow certain patterns that we consider safe
-disable:
-  - SC2034
-  - SC2155
-  - SC2086
+disable: []
 
 # Enable strict checks
 severity: error
