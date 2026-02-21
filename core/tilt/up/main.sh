@@ -16,6 +16,9 @@ _kubernetes_manifests_dir=${TILT_UP_KUBERNETES_MANIFESTS_DIR:-"${_configs_dir}/k
 _tiltfile_path=${TILT_UP_TILTFILE_PATH:-"${_working_dir}/Tiltfile"}
 _tls_manifest_path=${TILT_UP_TLS_MANIFEST_PATH:-"${_kubernetes_manifests_dir}/titan.dev-tls.yaml"}
 
+# Source environment variables
+. "${_script_dir}/env.sh"
+
 # Parse flags
 
 while :; do
