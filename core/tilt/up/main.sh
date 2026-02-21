@@ -6,9 +6,31 @@ set -u
 # Variables
 
 _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-# Source environment variables FIRST
+
+# Cleanup function to unset all environment variables
+cleanup_env() {
+    # Common variables
+    unset TILT_PROJECT_NAME
+    unset TILT_FORCE
+    # Up-specific variables
+    unset TILT_UP_PROJECT_NAME
+    unset TILT_UP_PROJECT_DOMAIN
+    unset TILT_UP_FORCE
+    unset TILT_UP_SETUP_TLS_CERTS
+    unset TILT_UP_WORKING_DIR
+    unset TILT_UP_CONFIGS_DIR
+    unset TILT_UP_KUBERNETES_MANIFESTS_DIR
+    unset TILT_UP_TILTFILE_PATH
+    unset TILT_UP_TLS_MANIFEST_PATH
+}
+
+# Set trap to cleanup on script exit
+trap cleanup_env EXIT
+
+# Source environment variables
 . "${_script_dir}/env.sh"
-# THEN set private variables using the now-loaded env vars
+
+# Set private variables using the now-loaded env vars
 _project_name="${TILT_UP_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
 _project_domain="${TILT_UP_PROJECT_DOMAIN:-${_project_name}.dev}"
 _force="${TILT_UP_FORCE:-${TILT_FORCE:-0}}"

@@ -5,5 +5,5 @@
 # Source common environment variables
 . "${_script_dir}/../env.sh"
 
-# TILT_STOP_PROJECT_NAME: Project name override for stop command
-TILT_STOP_PROJECT_NAME="${TILT_STOP_PROJECT_NAME:-${TILT_PROJECT_NAME}}"
+# Export environment variables
+export TILT_STOP_PROJECT_NAME="${TILT_STOP_PROJECT_NAME:-${TILT_PROJECT_NAME}}"
