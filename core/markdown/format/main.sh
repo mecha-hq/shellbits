@@ -9,4 +9,4 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/env.sh"
 
 # Exec
-markdownlint-cli2-fix "${MARKDOWN_FORMAT_PATTERN:-**/*.md}"
+markdownlint-cli2 --fix ${MARKDOWN_FORMAT_PATTERN}
