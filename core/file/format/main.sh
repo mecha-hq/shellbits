@@ -1,7 +1,6 @@
 #!/bin/sh
 
-set -e
-set -o errexit -o nounset
+set -eu
 
 # Variables
 _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)

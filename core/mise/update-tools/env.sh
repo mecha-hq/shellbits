@@ -1,7 +1,6 @@
 #!/bin/sh
 
-set -e
-set -u
+set -eu
 
 # Public environment variables for mise update-tools command
 

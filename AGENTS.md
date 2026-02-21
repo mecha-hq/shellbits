@@ -84,7 +84,7 @@ make mkfile-lint
 ### Shell Scripts
 
 1. **Shebang**: Use `#!/bin/sh` for POSIX compliance
-2. **Error Handling**: Always include `set -e` and `set -o errexit -o nounset` at the beginning
+2. **Error Handling**: Always include `set -eu` at the beginning
 3. **Indentation**: Use tabs for indentation (2 spaces equivalent)
 4. **Quoting**: Always quote variables: `"$variable"`
 5. **Error Messages**: Redirect error messages to stderr: `echo "Error message" >&2`
@@ -92,7 +92,7 @@ make mkfile-lint
 
 ### Go Code
 
-1. **Imports**: 
+1. **Imports**:
    - Use `goimports` for automatic import management
    - Group imports: standard library, third-party, local packages
    - Local prefix: `github.com/mecha-hq`
@@ -165,8 +165,7 @@ make mkfile-lint
 ```bash
 #!/bin/sh
 
-set -e
-set -o errexit -o nounset
+set -eu
 
 # Your code here
 echo "Script executed successfully"

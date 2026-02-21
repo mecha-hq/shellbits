@@ -1,6 +1,5 @@
 #!/bin/sh
 
-set -e
-set -o errexit -o nounset
+set -eu
 
 checkmake --config .rules/checkmake.ini Makefile

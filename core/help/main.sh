@@ -1,7 +1,6 @@
 #!/bin/sh
 
-set -e
-set -o errexit -o nounset
+set -eu
 
 # Parse makefiles from arguments
 _makefiles=$(printf "%s\n" "$@" | sed 's|//|/|g' | sort -u)

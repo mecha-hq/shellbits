@@ -1,7 +1,6 @@
 #!/bin/sh
 
-set -e
-set -u
+set -eu
 
 # Common public environment variables for markdown scripts
 

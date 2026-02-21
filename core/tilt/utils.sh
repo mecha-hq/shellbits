@@ -1,7 +1,6 @@
 #!/bin/sh
 
-set -e
-set -u
+set -eu
 
 # Create the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
 create() {
