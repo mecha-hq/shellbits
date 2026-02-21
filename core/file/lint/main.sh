@@ -9,9 +9,11 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/env.sh"
 
 # Exec
-file-cr --text --ignore "${FILE_LINT_IGNORE_PATHS}" --path .
-file-crlf --text --ignore "${FILE_LINT_IGNORE_PATHS}" --path .
-file-trailing-single-newline --text --ignore "${FILE_LINT_IGNORE_PATHS}" --path .
-file-trailing-space --text --ignore "${FILE_LINT_IGNORE_PATHS}" --path .
-file-utf8 --text --ignore "${FILE_LINT_IGNORE_PATHS}" --path .
-file-utf8-bom --text --ignore "${FILE_LINT_IGNORE_PATHS}" --path .
+file-cr --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .
+file-crlf --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .
+file-nullbyte --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .
+file-trailing-newline --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .
+file-trailing-single-newline --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .
+file-trailing-space --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .
+file-utf8 --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .
+file-utf8-bom --text --ignore "${FILE_FORMAT_IGNORE_PATHS}" --path .

@@ -11,4 +11,4 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/../env.sh"
 
 # Export environment variables
-export FILE_FORMAT_IGNORE_PATHS="${FILE_FORMAT_IGNORE_PATHS:-.git/,.github/,.vscode/,.idea/}"
+export FILE_FORMAT_IGNORE_PATHS="${FILE_FORMAT_IGNORE_PATHS:-${FILE_IGNORE_PATHS:-}}"
