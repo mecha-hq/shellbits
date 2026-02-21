@@ -5,13 +5,13 @@ set -o errexit -o nounset
 
 # Variables
 
-PROJECT_NAME="${TILT_DOWN_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
-FORCE="${TILT_DOWN_FORCE:-${TILT_FORCE:-0}}"
+_project_name="${TILT_DOWN_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
+_force="${TILT_DOWN_FORCE:-${TILT_FORCE:-0}}"
 
 while :; do
     case ${1:-} in
         --force)                  # Takes an option argument, ensuring it has been specified.
-            FORCE=1
+            _force=1
             ;;
         --)                       # End of all options.
             shift
@@ -27,14 +27,14 @@ done
 # Exec
 
 echo "Deleting cluster..."
-docker rm -f "${PROJECT_NAME}-control-plane"
+docker rm -f "${_project_name}-control-plane"
 
-if [ "${FORCE}" -eq "1" ]; then
+if [ "${_force}" -eq "1" ]; then
   echo "Deleting local registry..."
-  docker rm -f "${PROJECT_NAME}-registry"
+  docker rm -f "${_project_name}-registry"
 else
   echo "Stopping local registry..."
-  docker stop "${PROJECT_NAME}-registry"
+  docker stop "${_project_name}-registry"
 fi
 
 echo "Done."

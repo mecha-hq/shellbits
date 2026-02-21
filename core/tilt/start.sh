@@ -5,15 +5,15 @@ set -o errexit -o nounset
 
 # Variables
 
-SCRIPT_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-PROJECT_NAME="${TILT_START_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
+_script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+_project_name="${TILT_START_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
 
 # Load utils
 
-. "${SCRIPT_DIR}/utils.sh"
+. "${_script_dir}/utils.sh"
 
 # Exec
 
-start "${PROJECT_NAME}"
+start "${_project_name}"
 
 echo "Done."

@@ -5,12 +5,12 @@ set -o errexit -o nounset
 
 # Variables
 
-PROJECT_NAME="${TILT_STOP_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
+_project_name="${TILT_STOP_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
 
 # Exec
 
 echo "Stopping cluster and local registry..."
 
-docker stop "${PROJECT_NAME}-control-plane" "${PROJECT_NAME}-registry"
+docker stop "${_project_name}-control-plane" "${_project_name}-registry"
 
 echo "Done."

@@ -9,24 +9,24 @@ function create {
   ctlptl apply -f "${KUBERNETES_MANIFESTS_DIR}/ctlptl-registry.yml"
   ctlptl apply -f "${KUBERNETES_MANIFESTS_DIR}/kind-config.yml"
 
-  wait_for_container_ready "${PROJECT_NAME}-registry" 60 || return 1
-  wait_for_container_ready "${PROJECT_NAME}-control-plane" 180 || return 1
-  wait_for_kube_api "${PROJECT_NAME}" 60 || return 1
+  wait_for_container_ready "${_project_name}-registry" 60 || return 1
+  wait_for_container_ready "${_project_name}-control-plane" 180 || return 1
+  wait_for_kube_api "${_project_name}" 60 || return 1
 
   disable_containers_restart
 }
 
 # Start the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
 function start {
-  local PROJECT_NAME=${1:?Error: argument 1 must not be empty}
+  local _project_name=${1:?Error: argument 1 must not be empty}
 
   echo "Starting cluster and local registry..."
 
-  docker start "${PROJECT_NAME}-registry" "${PROJECT_NAME}-control-plane"
+  docker start "${_project_name}-registry" "${_project_name}-control-plane"
 
-  wait_for_container_ready "${PROJECT_NAME}-registry" 60 || return 1
-  wait_for_container_ready "${PROJECT_NAME}-control-plane" 180 || return 1
-  wait_for_kube_api "${PROJECT_NAME}" 60 || return 1
+  wait_for_container_ready "${_project_name}-registry" 60 || return 1
+  wait_for_container_ready "${_project_name}-control-plane" 180 || return 1
+  wait_for_kube_api "${_project_name}" 60 || return 1
 
   disable_containers_restart
 }
@@ -34,7 +34,7 @@ function start {
 
 # Create and inject self-signed TLS certificates into the cluster using mkcert.
 # This is necessary for the ingress to work.
-# Remember to add "0.0.0.0 ${PROJECT_DOMAIN}" line to your /etc/hosts file
+# Remember to add "0.0.0.0 ${_project_domain}" line to your /etc/hosts file
 function setup_certs {
   local MANIFESTS_DIR=${1:?Error: argument 1 must not be empty}
   local CERTS_DIR=${2:?Error: argument 2 must not be empty}
@@ -43,33 +43,33 @@ function setup_certs {
   mkdir -p "${CERTS_DIR}" "${MANIFESTS_DIR}"
 
   if [ "${FORCE}" -eq 1 ]; then
-    if [ -f "${MANIFESTS_DIR}/${PROJECT_DOMAIN}-tls.yaml" ]; then
-      rm -f "${MANIFESTS_DIR}/${PROJECT_DOMAIN}-tls.yaml"
+    if [ -f "${MANIFESTS_DIR}/${_project_domain}-tls.yaml" ]; then
+      rm -f "${MANIFESTS_DIR}/${_project_domain}-tls.yaml"
     fi
   fi
 
   # setup self-signed tls certificates
-  if [ ! -f "${MANIFESTS_DIR}/${PROJECT_DOMAIN}-tls.yaml" ]; then
+  if [ ! -f "${MANIFESTS_DIR}/${_project_domain}-tls.yaml" ]; then
     echo "Creating TLS certificate..."
 
-    (cd "${CERTS_DIR}" && mkcert "*.${PROJECT_DOMAIN}" "${PROJECT_DOMAIN}" && mkcert -install) &&
+    (cd "${CERTS_DIR}" && mkcert "*.${_project_domain}" "${_project_domain}" && mkcert -install) &&
       echo "Creating Kubernetes secret..."
 
-      kubectl create secret tls "${PROJECT_DOMAIN}-tls" \
-        --cert="${CERTS_DIR}/_wildcard.${PROJECT_DOMAIN}+1.pem" \
-        --key="${CERTS_DIR}/_wildcard.${PROJECT_DOMAIN}+1-key.pem" \
-        -o yaml --dry-run=client > "${MANIFESTS_DIR}/${PROJECT_DOMAIN}-tls.yaml"
+      kubectl create secret tls "${_project_domain}-tls" \
+        --cert="${CERTS_DIR}/_wildcard.${_project_domain}+1.pem" \
+        --key="${CERTS_DIR}/_wildcard.${_project_domain}+1-key.pem" \
+        -o yaml --dry-run=client > "${MANIFESTS_DIR}/${_project_domain}-tls.yaml"
   fi
 }
 
 function setup_kubeconfig {
-  local PROJECT_NAME=${1:?Error: argument 1 must not be empty}
+  local _project_name=${1:?Error: argument 1 must not be empty}
   local CONFIGS_DIR=${2:?Error: argument 2 must not be empty}
 
   echo "Setting up kubeconfig..."
 
-  kind get kubeconfig --name "${PROJECT_NAME}" > "${CONFIGS_DIR}/kubeconfig"
-  kubectl --kubeconfig "${CONFIGS_DIR}/kubeconfig" config set-context "${PROJECT_NAME}"
+  kind get kubeconfig --name "${_project_name}" > "${CONFIGS_DIR}/kubeconfig"
+  kubectl --kubeconfig "${CONFIGS_DIR}/kubeconfig" config set-context "${_project_name}"
 
   export KUBECONFIG="${CONFIGS_DIR}/kubeconfig"
 }
@@ -81,7 +81,7 @@ function setup_tiltfiles {
 
   mkdir -p "${TILTFILES_DIR}"
 
-  cat "${SCRIPT_DIR}/files/setup.tiltfile.tpl" | envsubst > "${TILTFILES_DIR}/setup.tiltfile"
+  cat "${_script_dir}/files/setup.tiltfile.tpl" | envsubst > "${TILTFILES_DIR}/setup.tiltfile"
 }
 
 # Wait until the container is running and, if a Docker healthcheck exists, reports healthy.
@@ -148,5 +148,5 @@ function wait_for_kube_api {
 
 # Disable automatic restart of the cluster and the registry
 function disable_containers_restart {
-  docker update --restart=no "${PROJECT_NAME}-registry" "${PROJECT_NAME}-control-plane"
+  docker update --restart=no "${_project_name}-registry" "${_project_name}-control-plane"
 }
