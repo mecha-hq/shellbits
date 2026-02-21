@@ -39,7 +39,7 @@ if [ "${TILT_UP_SETUP_TLS_CERTS}" -eq 1 ]; then
     # Setup self-signed TLS certificates for the ingress to work.
     # It installs the CA certificate to your browser's trusted certificates.
     # Remember to add 0.0.0.0 ${TILT_UP_PROJECT_NAME} line to your /etc/hosts file.
-    setup_certs "${TILT_UP_KUBERNETES_MANIFESTS_DIR}" "${TILT_UP_CONFIGS_DIR}/certs" "${TILT_UP_FORCE}"
+    setup_certs "${TILT_UP_PROJECT_DOMAIN}" "${TILT_UP_KUBERNETES_MANIFESTS_DIR}" "${TILT_UP_CONFIGS_DIR}/certs" "${TILT_UP_FORCE}"
 fi
 
 # Exec

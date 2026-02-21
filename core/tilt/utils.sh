@@ -36,9 +36,10 @@ function start {
 # This is necessary for the ingress to work.
 # Remember to add "0.0.0.0 ${_project_domain}" line to your /etc/hosts file
 function setup_certs {
-  _manifests_dir=${1:?Error: argument 1 must not be empty}
-  _certs_dir=${2:?Error: argument 2 must not be empty}
-  _force=${3:?Error: argument 3 must not be empty}
+  _project_domain=${1:?Error: argument 1 must not be empty}
+  _manifests_dir=${2:?Error: argument 2 must not be empty}
+  _certs_dir=${3:?Error: argument 3 must not be empty}
+  _force=${4:?Error: argument 4 must not be empty}
 
   mkdir -p "${_certs_dir}" "${_manifests_dir}"
 
