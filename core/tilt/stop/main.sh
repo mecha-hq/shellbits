@@ -5,9 +5,10 @@ set -u
 
 # Variables
 
+_script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 _project_name="${TILT_STOP_PROJECT_NAME:-${TILT_PROJECT_NAME:-$(basename $(pwd))}}"
 # Source environment variables
-. "${\{_script_dir\}\}/env.sh"
+. "${_script_dir}/env.sh"
 
 # Exec
 
