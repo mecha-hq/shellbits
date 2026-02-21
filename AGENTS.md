@@ -89,6 +89,8 @@ make mkfile-lint
 4. **Quoting**: Always quote variables: `"$variable"`
 5. **Error Messages**: Redirect error messages to stderr: `echo "Error message" >&2`
 6. **Exit Codes**: Use explicit exit codes: `exit 1` for errors
+7. **Function Definitions**: Use `function_name() { ... }` syntax
+8. **Command Substitution**: Use `$(command)` instead of backticks
 
 ### Go Code
 
@@ -124,31 +126,29 @@ make mkfile-lint
 1. **Indentation**: Use tabs only (never spaces)
 2. **PHONY Targets**: Declare all non-file targets as `.PHONY`
 3. **Variables**: Use `?=` for overrideable variables
-4. **Include Order**: Include utility files first, then domain-specific files
-5. **Error Handling**: Use `@` prefix to suppress command echo for clean output
-
-### General Rules
-
-1. **ShellCheck Configuration**: Follow `.rules/shellcheck.yaml`
-2. **Checkmake Configuration**: Follow `.rules/checkmake.yaml`
-3. **POSIX Compliance**: Ensure shell scripts are POSIX compliant
-4. **Docker Images**: Use specified container images for linting/formatting
-5. **Environment Variables**: Use module-specific prefixes (e.g., `GOLANG_`, `SHELL_`)
+4. **Target Naming**: Use kebab-case for target names (e.g., `shell-lint`)
+5. **Error Handling**: Use `@` prefix to suppress command echo
 
 ## Tool Configuration
 
 ### ShellCheck
+- Configuration file: `.rules/shellcheck.yaml`
 - Disabled rules: SC2034, SC2155, SC2086
 - Severity: error
 - POSIX compliance: enabled
+- Check sourced scripts: true
+- Exclude patterns: `.git/*`, `node_modules/*`
 
 ### Checkmake
+- Configuration file: `.rules/checkmake.yaml`
 - Strict mode: enabled
 - Custom rules for duplicate PHONY targets and consistent indentation
+- Exclude patterns: `.git/*`, `node_modules/*`
 
 ### GolangCI-Lint
 - Configuration file: `.rules/.golangci.yml` (if present)
 - Run with: `golangci-lint run --color=always`
+- Recommended flags: `--fix`, `--enable-all`, `--disable=lll`
 
 ## Best Practices
 
@@ -158,6 +158,10 @@ make mkfile-lint
 4. **Documentation**: Comment complex logic and non-obvious decisions
 5. **Testing**: Test both success and failure cases
 6. **Performance**: Optimize for readability first, performance second
+7. **Security**: Never expose secrets or sensitive data
+8. **Portability**: Ensure scripts work across Unix-like systems
+9. **Modularity**: Keep scripts focused on single responsibilities
+10. **Consistency**: Follow existing patterns and conventions
 
 ## Common Patterns
 
@@ -193,8 +197,6 @@ var _ = Describe("PackageName", func() {
 
 ## Running Specific Tests
 
-To run a single test or specific tests:
-
 ```bash
 # Using ginkgo to run specific test
 ginkgo run -vv --focus="TestSpecificFunction" ./path/to/package
@@ -203,13 +205,21 @@ ginkgo run -vv --focus="TestSpecificFunction" ./path/to/package
 go test -v -run "TestSpecificFunction" ./path/to/package
 ```
 
-## CI/CD Integration
+## Project Structure
 
-The repository is designed to work with:
-- Mise for tool management
-- Asdf for plugin management
-- Docker for isolated environments
-- GitHub Actions for CI/CD pipelines
+```
+shellbits/
+├── core/                  # Core functionality
+│   ├── module/            # Individual modules (golang, shell, etc.)
+│   │   ├── submodule/    # Submodules with specific functionality
+│   │   │   ├── env.sh     # Environment variables
+│   │   │   ├── main.sh    # Main script logic
+│   │   │   └── ...        # Additional scripts
+│   │   └── env.sh         # Module-wide environment variables
+├── .rules/                # Tool configuration files
+├── docs/                 # Documentation and ADRs
+└── AGENTS.md             # Guidelines for agentic tools
+```
 
 ## Environment Variables
 
@@ -217,3 +227,7 @@ Use the following patterns for environment variables:
 - `MODULE_FORCE`: Force flag for module operations
 - `MODULE_SHELLBITS_DIR`: Directory where shellbits is installed
 - `MODULE_IMAGE`: Docker image to use for operations
+
+### Environment Variable Priority
+More specific environment variables override less specific ones:
+- `TILT_DOWN_FORCE` > `TILT_FORCE` > `FORCE`
