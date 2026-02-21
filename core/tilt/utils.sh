@@ -1,5 +1,8 @@
 #!/bin/sh
 
+set -e
+set -u
+
 # Create the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
 create() {
   _kubernetes_manifests_dir=${1:?Error: argument 1 must not be empty}
@@ -9,9 +12,9 @@ create() {
   ctlptl apply -f "${_kubernetes_manifests_dir}/ctlptl-registry.yml"
   ctlptl apply -f "${_kubernetes_manifests_dir}/kind-config.yml"
 
-  wait_for_container_ready "${_project_name}-registry" 60 || return 1
-  wait_for_container_ready "${_project_name}-control-plane" 180 || return 1
-  wait_for_kube_api "${_project_name}" 60 || return 1
+  wait_for_container_ready "${_project_name}-registry" 60
+  wait_for_container_ready "${_project_name}-control-plane" 180
+  wait_for_kube_api "${_project_name}" 60
 
   disable_containers_restart "${_project_name}"
 }
@@ -24,9 +27,9 @@ start() {
 
   docker start "${_project_name}-registry" "${_project_name}-control-plane"
 
-  wait_for_container_ready "${_project_name}-registry" 60 || return 1
-  wait_for_container_ready "${_project_name}-control-plane" 180 || return 1
-  wait_for_kube_api "${_project_name}" 60 || return 1
+  wait_for_container_ready "${_project_name}-registry" 60
+  wait_for_container_ready "${_project_name}-control-plane" 180
+  wait_for_kube_api "${_project_name}" 60
 
   disable_containers_restart "${_project_name}"
 }
