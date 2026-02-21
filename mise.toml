@@ -1,7 +1,19 @@
 [tools]
-shellcheck = "0.11.0"
-checkmake = "0.3.2"
-adr-tools = "3.0.0"
+"npm:jsonlint" = "1.6.3"
 "npm:markdownlint-cli2" = "0.21.0"
+adr-tools = "3.0.0"
+checkmake = "0.3.2"
+cosign = "3.0.5"
+go = "1.26.0"
+golangci-lint = "2.10.1"
+goreleaser = "2.13.3"
+hadolint = "2.14.0"
+helm = "3.20.0"
+jq = "1.8.1"
+shellcheck = "0.11.0"
+shfmt = "3.12.0"
+tilt = "0.36.3"
+yamllint = "1.38.0"
+yq = "4.52.4"
 
 [env]
