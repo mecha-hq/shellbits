@@ -2,7 +2,7 @@
 
 # Create the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
 function create {
-  local KUBERNETES_MANIFESTS_DIR=${1:?Error: argument 1 must not be empty}
+  KUBERNETES_MANIFESTS_DIR=${1:?Error: argument 1 must not be empty}
 
   echo "Creating cluster and local registry..."
 
@@ -18,7 +18,7 @@ function create {
 
 # Start the ctlptl registry (which is local registry used by Tilt) and the kind cluster.
 function start {
-  local _project_name=${1:?Error: argument 1 must not be empty}
+  _project_name=${1:?Error: argument 1 must not be empty}
 
   echo "Starting cluster and local registry..."
 
@@ -36,9 +36,9 @@ function start {
 # This is necessary for the ingress to work.
 # Remember to add "0.0.0.0 ${_project_domain}" line to your /etc/hosts file
 function setup_certs {
-  local MANIFESTS_DIR=${1:?Error: argument 1 must not be empty}
-  local CERTS_DIR=${2:?Error: argument 2 must not be empty}
-  local FORCE=${3:?Error: argument 3 must not be empty}
+  MANIFESTS_DIR=${1:?Error: argument 1 must not be empty}
+  CERTS_DIR=${2:?Error: argument 2 must not be empty}
+  FORCE=${3:?Error: argument 3 must not be empty}
 
   mkdir -p "${CERTS_DIR}" "${MANIFESTS_DIR}"
 
@@ -63,8 +63,8 @@ function setup_certs {
 }
 
 function setup_kubeconfig {
-  local _project_name=${1:?Error: argument 1 must not be empty}
-  local CONFIGS_DIR=${2:?Error: argument 2 must not be empty}
+  _project_name=${1:?Error: argument 1 must not be empty}
+  CONFIGS_DIR=${2:?Error: argument 2 must not be empty}
 
   echo "Setting up kubeconfig..."
 
@@ -75,7 +75,7 @@ function setup_kubeconfig {
 }
 
 function setup_tiltfiles {
-  local TILTFILES_DIR=${1:?Error: argument 1 must not be empty}
+  TILTFILES_DIR=${1:?Error: argument 1 must not be empty}
 
   echo "Setting up tiltfiles..."
 
@@ -86,10 +86,10 @@ function setup_tiltfiles {
 
 # Wait until the container is running and, if a Docker healthcheck exists, reports healthy.
 function wait_for_container_ready {
-  local CONTAINER_NAME=${1:?Error: argument 1 must not be empty}
-  local TIMEOUT=${2:-60}
-  local INTERVAL=1
-  local ELAPSED=0
+  CONTAINER_NAME=${1:?Error: argument 1 must not be empty}
+  TIMEOUT=${2:-60}
+  INTERVAL=1
+  ELAPSED=0
 
   printf 'Waiting for %s to be ready... ' "${CONTAINER_NAME}"
 
@@ -114,7 +114,7 @@ function wait_for_container_ready {
     fi
 
     sleep "${INTERVAL}"
-    ELAPSED=$((ELAPSED + INTERVAL))
+    ELAPSED=$(expr $ELAPSED + $INTERVAL)
   done
 
   printf 'FAIL\n' >&2
@@ -123,11 +123,11 @@ function wait_for_container_ready {
 
 # Wait until the kubernetes api is responding with a success message.
 function wait_for_kube_api {
-  local CLUSTER_NAME=${1:?Error: argument 1 must not be empty}
-  local TIMEOUT=${2:-60}
-  local INTERVAL=1
-  local ELAPSED=0
-  local PORT="$(kind get kubeconfig --name ${CLUSTER_NAME} | yq '.clusters[0].cluster.server' | cut -d ':' -f 3)"
+  CLUSTER_NAME=${1:?Error: argument 1 must not be empty}
+  TIMEOUT=${2:-60}
+  INTERVAL=1
+  ELAPSED=0
+  PORT="$(kind get kubeconfig --name ${CLUSTER_NAME} | yq '.clusters[0].cluster.server' | cut -d ':' -f 3)"
 
   printf 'Waiting for Kubernetes API to return 200... '
 
@@ -139,7 +139,7 @@ function wait_for_kube_api {
     fi
 
     sleep "${INTERVAL}"
-    ELAPSED=$((ELAPSED + INTERVAL))
+    ELAPSED=$(expr $ELAPSED + $INTERVAL)
   done
 
   printf 'FAIL\n' >&2
