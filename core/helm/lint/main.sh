@@ -13,4 +13,5 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 ct lint \
     --charts "${HELM_LINT_CHARTS_PATH}" \
     --validate-maintainers="${HELM_LINT_VALIDATE_MAINTAINERS}" \
-    --config "${HELM_LINT_CONFIG_PATH}"
+    --config "${HELM_LINT_CONFIG_PATH}" \
+    "${HELM_LINT_FLAGS}"

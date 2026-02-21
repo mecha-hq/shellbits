@@ -12,8 +12,9 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 # Exec
 helm upgrade \
     "${HELM_INSTALL_RELEASE_NAME}" "${HELM_INSTALL_CHART_PATH}" \
-    --install \
-    --debug \
     --kubeconfig="${HELM_INSTALL_KUBE_CONFIG}" \
     --namespace="${HELM_INSTALL_KUBE_NAMESPACE}" \
-    --atomic
+    --atomic \
+    --debug \
+    --install \
+    "${HELM_INSTALL_FLAGS}"

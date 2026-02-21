@@ -5,13 +5,7 @@ set -u
 
 # Public environment variables for helm template command
 
-# Variables
-_script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-
-# Source common environment variables
-. "${_script_dir}/../env.sh"
-
 # Export environment variables
-export HELM_TEMPLATE_CHART_NAME="${HELM_TEMPLATE_CHART_NAME:-$(basename "$(pwd)")}"
+export HELM_TEMPLATE_RELEASE_NAME="${HELM_TEMPLATE_RELEASE_NAME:-$(basename "$(pwd)")}"
 export HELM_TEMPLATE_CHART_PATH="${HELM_TEMPLATE_CHART_PATH:-.}"
-export HELM_TEMPLATE_CHART_COLOR="${HELM_TEMPLATE_CHART_COLOR:-true}"
+export HELM_TEMPLATE_FLAGS="${HELM_TEMPLATE_FLAGS:-}"
