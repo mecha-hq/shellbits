@@ -8,5 +8,5 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 # Source environment variables
 . "${_script_dir}/env.sh"
 
-# Exec
-shfmt ${SHELL_FORMAT_FLAGS} .
+# Exec - use shellcheck tool
+${SHELLBITS_DIR}/tools/shellcheck/lint/main.sh
