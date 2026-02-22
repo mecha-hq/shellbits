@@ -1,6 +1,6 @@
 HELP_SHELLBITS_DIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-include ${HELP_SHELLBITS_DIR}/utils.mk
+include ${HELP_SHELLBITS_DIR}/../utils.mk
 
 .PHONY: help
 help:

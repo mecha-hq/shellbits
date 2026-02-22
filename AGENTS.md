@@ -209,9 +209,9 @@ go test -v -run "TestSpecificFunction" ./path/to/package
 
 ```
 shellbits/
-├── core/                  # Core functionality
-│   ├── module/            # Individual modules (golang, shell, etc.)
-│   │   ├── submodule/    # Submodules with specific functionality
+├── tools/                 # Basic tools
+│   ├── tool/              # Individual tools (jq, yq, tilt, yamllint, ...)
+│   │   ├── action/        # Specific actions for the tool
 │   │   │   ├── env.sh     # Environment variables
 │   │   │   ├── main.sh    # Main script logic
 │   │   │   └── ...        # Additional scripts
