@@ -8,5 +8,5 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 # Source environment variables
 . "${_script_dir}/env.sh"
 
-# Exec
-GOFLAGS="${GOLANG_GOFLAGS:--mod=mod}" ginkgo run -vv --trace -covermode=count -coverprofile=coverage.out -timeout 300s -p test/unit
+# Exec - set package to test/integration and run ginkgo
+GINKGO_TEST_PACKAGE="test/integration" ${SHELLBITS_DIR}/tools/ginkgo/test/main.sh

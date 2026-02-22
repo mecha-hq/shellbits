@@ -9,4 +9,4 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/env.sh"
 
 # Exec
-GOFLAGS="${GOLANG_GOFLAGS:--mod=mod}" ginkgo run -vv --trace -covermode=count -coverprofile=coverage.out -timeout 300s -p test/e2e
+${SHELLBITS_DIR}/tools/ginkgo/test/main.sh

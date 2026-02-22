@@ -9,18 +9,28 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 . "${_script_dir}/env.sh"
 
 # Get Go files
-_gofiles=$(find . -name "*.go" -type f -not -path '*/vendor/*' | sed 's/^\.\///g')
+_gofiles=$(find . -name "*.go" -type f -not -path '*/vendor/*' | sed 's/^\.\/\/\/g')
 
-echo "formatting with gofmt.."
-echo "${_gofiles}" | xargs -I {} sh -c 'gofmt -w -s {}'
+echo "formatting with go fmt.."
+if [ -n "${_gofiles}" ]; then
+    echo "${_gofiles}" | xargs -I {} sh -c "${SHELLBITS_DIR}/tools/go/fmt/main.sh"
+fi
 
 echo "formatting with gofumpt.."
-echo "${_gofiles}" | xargs -I {} sh -c 'gofumpt -w -extra {}'
+if [ -n "${_gofiles}" ]; then
+    echo "${_gofiles}" | xargs -I {} sh -c "${SHELLBITS_DIR}/tools/gofumpt/format/main.sh"
+fi
 
 echo "formatting with goimports.."
-goimports -v -w -e -local "${GOLANG_FORMAT_PREFIX}" main.go
-goimports -v -w -e -local "${GOLANG_FORMAT_PREFIX}" internal/
+if [ -f "main.go" ]; then
+    ${SHELLBITS_DIR}/tools/goimports/format/main.sh
+fi
+
+if [ -d "internal/" ]; then
+    (cd internal/ && ${SHELLBITS_DIR}/tools/goimports/format/main.sh)
+fi
 
 echo "formatting with gci.."
-echo "${_gofiles}" | \
-    xargs -I {} sh -c "gci write --skip-generated -s standard -s default -s \"Prefix(${GOLANG_FORMAT_PREFIX})\" {}"
+if [ -n "${_gofiles}" ]; then
+    echo "${_gofiles}" | xargs -I {} sh -c "${SHELLBITS_DIR}/tools/gci/format/main.sh"
+fi

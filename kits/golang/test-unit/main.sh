@@ -8,5 +8,5 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 # Source environment variables
 . "${_script_dir}/env.sh"
 
-# Exec
-golangci-lint -v run --color=always --config=.rules/.golangci.yml ./...
+# Exec - set package to test/unit and run ginkgo
+GINKGO_TEST_PACKAGE="test/unit" ${SHELLBITS_DIR}/tools/ginkgo/test/main.sh
