@@ -13,7 +13,8 @@ _image_name="${1:?Error: IMAGE_NAME argument is required}"
 _image_tag="${2:-${COSIGN_TEST_SIGN_IMAGE_TAG}}"
 _cosign_env_var="${3:-${COSIGN_TEST_SIGN_COSIGN_ENV_VAR}}"
 
-# Sign the image
+# Sign the image using the cosign tool
+# For now, use cosign directly until we update to use tools/cosign/test-signature/
 echo "Signing image ${_image_name}:${_image_tag}"
 _image_id=$(docker inspect "${_image_name}:${_image_tag}" | jq -r '.[0].Id')
 cosign sign --key="env://${_cosign_env_var}" --upload=false --yes "${_image_name}@${_image_id}"

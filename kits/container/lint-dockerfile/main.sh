@@ -8,7 +8,8 @@ _script_dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 # Source environment variables
 . "${_script_dir}/env.sh"
 
-# Exec
+# Exec - use consolidated dockerfile linter tool
+# For now, use hadolint directly until we create the consolidated tool
 find . \
   -type f \
   -name '*Dockerfile*' \
@@ -20,4 +21,4 @@ find . \
   -not -name '.DS_Store' \
   -not -name '.gitkeep' \
   "${DOCKER_LINT_DOCKERFILE_FIND_FLAGS:-}" \
-  -exec hadolint {} \;
+  -exec hadolint ${HADOLINT_LINT_FLAGS:-} {} \;
