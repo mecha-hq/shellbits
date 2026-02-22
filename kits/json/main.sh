@@ -3,7 +3,7 @@
 set -eu
 
 # JSON kit main script
-# JSON operations using jq and jsonlint
+# JSON operations using jsonlint and jq tools
 
 JSON_KIT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -18,18 +18,17 @@ ACTION="${1:-help}"
 case "$ACTION" in
     format)
         shift
-        "${JSON_KIT_DIR}/format.sh" "$@"
+        "${JSON_KIT_DIR}/format/main.sh" "$@"
         ;;
     validate|lint)
         shift
         # Validate JSON files
         if [ $# -eq 0 ]; then
-            echo "Usage: $0 validate <file-pattern>"
-            exit 1
+            set -- "."
         fi
         
         echo "Validating JSON files: $@"
-        # Add JSON validation logic here
+        "${JSON_KIT_DIR}/lint/main.sh" "$@"
         ;;
     query)
         shift
@@ -42,29 +41,29 @@ case "$ACTION" in
         QUERY="$1"
         shift
         echo "Running jq query '$QUERY' on files: $@"
-        # Add jq query logic here
+        # Use jq tool for querying
+        find $@ -name "*.json" -type f -exec sh -c 'jq "$1" "$2"' _ "$QUERY" {} \;
         ;;
     pretty)
         shift
         # Pretty print JSON
         if [ $# -eq 0 ]; then
-            echo "Usage: $0 pretty <file-pattern>"
-            exit 1
+            set -- "."
         fi
         
         echo "Pretty printing JSON files: $@"
-        # Add pretty print logic here
+        find $@ -name "*.json" -type f -exec ${SHELLBITS_DIR}/tools/jq/format/main.sh {} \;
         ;;
     help|--help|-h)
-        echo "JSON Kit - JSON operations using jq and jsonlint"
+        echo "JSON Kit - JSON operations using jsonlint and jq tools"
         echo ""
         echo "Usage: $0 <command> [args...]"
         echo ""
         echo "Commands:"
-        echo "  format      - Format JSON files"
-        echo "  validate    - Validate JSON files"
+        echo "  format      - Format JSON files using jq"
+        echo "  validate    - Validate JSON files using jsonlint"
         echo "  query       - Query JSON with jq"
-        echo "  pretty      - Pretty print JSON"
+        echo "  pretty      - Pretty print JSON using jq"
         echo "  help        - Show this help"
         ;;
     *)
