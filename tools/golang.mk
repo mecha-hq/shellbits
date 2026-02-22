@@ -8,10 +8,6 @@ check-deps-upgrades:
 format:
 	@${GOLANG_SHELLBITS_DIR}/golang/format/main.sh
 
-.PHONY: install-tools
-install-tools:
-	@${GOLANG_SHELLBITS_DIR}/golang/install-tools/main.sh
-
 .PHONY: lint
 lint:
 	@${GOLANG_SHELLBITS_DIR}/golang/lint/main.sh
