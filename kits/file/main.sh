@@ -16,6 +16,16 @@ fi
 ACTION="${1:-help}"
 
 case "$ACTION" in
+    lint)
+        shift
+        # Lint files - primary action
+        if [ $# -eq 0 ]; then
+            echo "Usage: $0 lint <file-pattern>"
+            exit 1
+        fi
+        
+        "${FILE_KIT_DIR}/lint/main.sh" "$@"
+        ;;
     format)
         shift
         # Format files
@@ -26,17 +36,6 @@ case "$ACTION" in
         
         echo "Formatting files: $@"
         # Add file formatting logic here
-        ;;
-    lint)
-        shift
-        # Lint files
-        if [ $# -eq 0 ]; then
-            echo "Usage: $0 lint <file-pattern>"
-            exit 1
-        fi
-        
-        echo "Linting files: $@"
-        # Add file linting logic here
         ;;
     check)
         shift
@@ -58,9 +57,12 @@ case "$ACTION" in
         fi
         
         echo "Processing files: $@"
-        echo "Formatting..."
         echo "Linting..."
+        "${FILE_KIT_DIR}/lint/main.sh" "$@"
+        echo "Formatting..."
+        # Add formatting logic
         echo "Checking..."
+        # Add checking logic
         ;;
     help|--help|-h)
         echo "File Kit - File operations and management"
@@ -68,8 +70,8 @@ case "$ACTION" in
         echo "Usage: $0 <command> [args...]"
         echo ""
         echo "Commands:"
+        echo "  lint        - Lint files (primary action)"
         echo "  format      - Format files"
-        echo "  lint        - Lint files"
         echo "  check       - Check file quality"
         echo "  all         - Run all file operations"
         echo "  help        - Show this help"
