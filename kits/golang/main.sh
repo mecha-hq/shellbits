@@ -32,12 +32,13 @@ case "$ACTION" in
         ;;
     build)
         shift
-        "${GOLANG_KIT_DIR}/goreleaser/main.sh" "$@"
+        # Use the new goreleaser build action
+        "${GOLANG_KIT_DIR}/build/main.sh" "$@"
         ;;
     release)
         shift
-        # Build and release
-        "${GOLANG_KIT_DIR}/goreleaser/main.sh" "$@"
+        # Use the new goreleaser release action
+        "${GOLANG_KIT_DIR}/release/main.sh" "$@"
         ;;
     lint)
         shift
@@ -68,7 +69,7 @@ case "$ACTION" in
         echo "Commands:"
         echo "  go          - Run go commands directly"
         echo "  format      - Format Go code"
-        echo "  build       - Build Go project"
+        echo "  build       - Build Go project with goreleaser"
         echo "  release     - Create release with goreleaser"
         echo "  lint        - Run linters (go vet)"
         echo "  test        - Run tests with race detector"
