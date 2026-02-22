@@ -18,7 +18,12 @@ ACTION="${1:-help}"
 case "$ACTION" in
     lint)
         shift
-        "${MAKEFILE_KIT_DIR}/main.sh" "$@"
+        # Lint Makefiles - primary action
+        if [ $# -eq 0 ]; then
+            set -- "Makefile"
+        fi
+        
+        "${MAKEFILE_KIT_DIR}/lint/main.sh" "$@"
         ;;
     check)
         shift
@@ -28,7 +33,7 @@ case "$ACTION" in
         fi
         
         echo "Checking Makefile quality: $@"
-        "${MAKEFILE_KIT_DIR}/main.sh" "$@"
+        "${MAKEFILE_KIT_DIR}/lint/main.sh" "$@"
         ;;
     validate)
         shift
@@ -49,7 +54,7 @@ case "$ACTION" in
         
         echo "Processing Makefile: $@"
         echo "Linting..."
-        "${MAKEFILE_KIT_DIR}/main.sh" "$@"
+        "${MAKEFILE_KIT_DIR}/lint/main.sh" "$@"
         echo "Validating..."
         # Add validation logic here
         ;;
@@ -59,7 +64,7 @@ case "$ACTION" in
         echo "Usage: $0 <command> [args...]"
         echo ""
         echo "Commands:"
-        echo "  lint        - Lint Makefiles"
+        echo "  lint        - Lint Makefiles (primary action)"
         echo "  check       - Check Makefile quality"
         echo "  validate    - Validate Makefile syntax"
         echo "  all         - Run all makefile operations"
